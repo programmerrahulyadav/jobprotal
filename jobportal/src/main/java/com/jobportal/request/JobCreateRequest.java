@@ -6,7 +6,7 @@ public class JobCreateRequest {
 	protected String skills;
 	protected int minExpRequired;
 	protected String industryRelatedTo;
-	protected String companyName;
+	protected String companyId;
 	
 	
 	public String getJobDescription() {
@@ -33,12 +33,11 @@ public class JobCreateRequest {
 	public void setIndustryRelatedTo(String industryRelatedTo) {
 		this.industryRelatedTo = industryRelatedTo;
 	}
-	public String getCompanyName() {
-		return companyName;
+	public String getCompanyId() {
+		return companyId;
 	}
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
-	
 	
 }

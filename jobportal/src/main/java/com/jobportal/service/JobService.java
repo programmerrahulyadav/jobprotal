@@ -24,7 +24,7 @@ public class JobService {
 	public void insertService(JobCreateRequest jobCreateRequest) throws Exception {
 
 		
-		 int companyId = companyDao.getCompanyId(jobCreateRequest.getCompanyName());
+		 int companyId = companyDao.getCompanyId(jobCreateRequest.getCompanyId());
 		if (companyId ==  0) {
 			throw new InvalidRequest("please create account for the Company","400");
 		} 

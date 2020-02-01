@@ -29,6 +29,7 @@ public class UserController {
 	@RequestMapping("/ping")
 	public void ping() {
 		System.out.println("ping : "+LocalDate.now());
+		System.out.println("helllow boy...");
 	}
 	
 	@PostMapping
