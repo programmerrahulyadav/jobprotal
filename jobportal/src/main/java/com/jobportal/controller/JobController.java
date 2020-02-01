@@ -26,6 +26,7 @@ public class JobController {
 	@RequestMapping("/create")
 	public ResponseEntity<String> create(@RequestBody JobCreateRequest jobCreateRequest) {
 		try {
+			System.out.println("..............hello in job service......");
 			jobService.insertService(jobCreateRequest);
 			return createResponse.createSucessResponse();
 		} catch (Exception e) {

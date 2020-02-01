@@ -23,19 +23,25 @@ public class CompanyDao {
 	
 	public void insert(CompanyCreateRequest companyCreateRequest) throws SQLException {
 		
-		String sqlQuery = "insert into Company(companyName, companyType, companyStrength) " +
-                " values (?,?,?)";
-		
-		 Connection con= dbConnection.getConnection();
-		 PreparedStatement prepareStatement = con.prepareStatement(sqlQuery);
-		 prepareStatement.setString(1, companyCreateRequest.getCompanyName());
-		 prepareStatement.setString(2, companyCreateRequest.getCompanyType());
-		 prepareStatement.setInt(3, companyCreateRequest.getCompanyStrength());
-		 
-		 prepareStatement.execute();
-		
-		 prepareStatement.close();
-		
+		PreparedStatement prepareStatement = null;
+		try {
+			
+			String sqlQuery = "insert into Company(companyName, companyType, companyStrength) " +
+	                " values (?,?,?)";
+			
+			 Connection con= dbConnection.getConnection();
+			 prepareStatement = con.prepareStatement(sqlQuery);
+			 prepareStatement.setString(1, companyCreateRequest.getCompanyName());
+			 prepareStatement.setString(2, companyCreateRequest.getCompanyType());
+			 prepareStatement.setInt(3, companyCreateRequest.getCompanyStrength());
+			 
+			 prepareStatement.execute();
+		} finally {
+			// TODO: handle finally clause
+			if(prepareStatement != null) {
+				prepareStatement.close();
+			}
+		}
 		 
 	}
 	
@@ -54,25 +60,48 @@ public class CompanyDao {
 			if(rs.next()) {
 				id = rs.getInt("id");
 			}
-			
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			throw e;
-		}
+		} 
 		finally {
-			try {
+			
+			if(rs != null) {
 				rs.close();
-				prepareStatement.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			
-			
+			if(prepareStatement != null) {
+				prepareStatement.close();
+			}
+				
 		}
 		
+		return id;
+	}
+	
+	public int getCompanyId_V2(int companyId) throws Exception  {
+
+		String sqlQuery = "select id from Company where id=? ";
+		PreparedStatement prepareStatement = null;
+		ResultSet rs = null;
+		int id = 0;
+		try {
+			
+			Connection con = dbConnection.getConnection();
+			prepareStatement = con.prepareStatement(sqlQuery);
+			prepareStatement.setInt(1, companyId);
+			rs = prepareStatement.executeQuery();
+			if(rs.next()) {
+				id = rs.getInt("id");
+			}
+		} 
+		finally {
+			
+			if(rs != null) {
+				rs.close();
+			}
+			if(prepareStatement != null) {
+				prepareStatement.close();
+			}
+				
+		}
+		System.out.println(id);
 		return id;
 	}
 	
@@ -108,9 +137,13 @@ public class CompanyDao {
 		} 
 		finally {
 			
+			if(rs != null) {
 				rs.close();
+			}
+			if(prepareStatement != null) {
 				prepareStatement.close();
-			
+			}
+				
 		}
 		
 		return list;

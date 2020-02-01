@@ -23,14 +23,14 @@ public class JobService {
 
 	public void insertService(JobCreateRequest jobCreateRequest) throws Exception {
 
-		int companyId = companyDao.getCompanyId(jobCreateRequest.getCompanyName());
-		if (companyId > 0) {
-			int jobId = jobDao.insert(jobCreateRequest);
-			jobCompanyMapDao.insert(companyId, jobId);
-		} else {
+		
+		 int companyId = companyDao.getCompanyId(jobCreateRequest.getCompanyName());
+		if (companyId ==  0) {
 			throw new InvalidRequest("please create account for the Company","400");
-		}
+		} 
 
+		int jobId = jobDao.insert(jobCreateRequest);
+		jobCompanyMapDao.insert(companyId, jobId);
 	}
 	
 }

@@ -40,4 +40,5 @@ public class JobCreateRequest {
 		this.companyName = companyName;
 	}
 	
+	
 }

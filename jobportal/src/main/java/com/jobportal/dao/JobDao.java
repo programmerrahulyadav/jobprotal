@@ -65,7 +65,10 @@ public class JobDao {
 			
 		} finally {
 
-			preparedStatement.close();
+
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
 		}
 		
 		

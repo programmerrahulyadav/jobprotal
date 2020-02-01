@@ -40,7 +40,10 @@ public class JobApplicationUserMapDao {
 			
 		}
 		finally {
-			preparedStatement.close();
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			
 		}
 		
 	}
@@ -92,7 +95,11 @@ public class JobApplicationUserMapDao {
 			preparedStatement.executeUpdate();
 
 		} finally {
-			preparedStatement.close();
+			
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			
 		}
 
 	}
@@ -143,7 +150,11 @@ public class JobApplicationUserMapDao {
 			}
 
 		} finally {
-			preparedStatement.close();
+			
+			if(preparedStatement != null) {
+				preparedStatement.close();
+			}
+			
 		}
 		
 		return status;

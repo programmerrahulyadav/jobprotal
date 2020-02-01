@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jobportal.Exception.InvalidRequest;
-import com.jobportal.constant.ApplicationStatus;
 import com.jobportal.dao.JobApplicationUserMapDao;
 import com.jobportal.dao.JobDao;
 import com.jobportal.dao.UserDao;

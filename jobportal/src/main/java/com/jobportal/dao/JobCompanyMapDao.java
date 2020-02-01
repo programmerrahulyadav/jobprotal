@@ -15,13 +15,12 @@ public class JobCompanyMapDao {
 	@Autowired
 	DBConnection dbConnection;
 	 
-	public void insert(int companyId, int jobId) {
+	public void insert(int companyId, int jobId) throws Exception {
 
 		PreparedStatement preparedStatement = null;
 
 		try {
-			System.out.println("companyId : "+companyId);
-			System.out.println("jobId : "+jobId);
+			
 			Connection con = dbConnection.getConnection();
 			String sql = "INSERT INTO JobCompanyMap(companyId,jobId) VALUES(?,?) ";
 			preparedStatement = con.prepareStatement(sql);
@@ -29,14 +28,11 @@ public class JobCompanyMapDao {
 			preparedStatement.setInt(2, jobId);
 
 			preparedStatement.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
-			try {
-				preparedStatement.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			
+				if(preparedStatement!= null) {
+					preparedStatement.close();
+				}
 		}
 
 	}

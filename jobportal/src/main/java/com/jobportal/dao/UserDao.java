@@ -41,7 +41,9 @@ public class UserDao {
 			 prepareStatement.execute();
 			 
 		}finally {
-			prepareStatement.close();
+			if(prepareStatement != null) {
+				prepareStatement.close();
+			}
 		}
 		
 	}
@@ -61,8 +63,14 @@ public class UserDao {
 				id = rs.getInt("id");
 			}
 		} finally {
-			rs.close();
-			psmt.close();
+			if(rs != null) {
+				rs.close();
+			}
+			
+			if(psmt != null) {
+				psmt.close();
+			}
+			
 		}
 
 		return id;
@@ -85,8 +93,13 @@ public class UserDao {
 				present = true;
 			}
 		} finally {
-			rs.close();
-			psmt.close();
+			if(rs != null) {
+				rs.close();
+			}
+			
+			if(psmt != null) {
+				psmt.close();
+			}
 		}
 
 		return present;
