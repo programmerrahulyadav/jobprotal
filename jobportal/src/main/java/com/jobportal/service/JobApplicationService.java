@@ -12,12 +12,16 @@ import com.jobportal.dao.JobDao;
 import com.jobportal.dao.UserDao;
 import com.jobportal.request.ApplyJobRequest;
 import com.jobportal.response.JobApplicantsResponse;
+import com.jobportal.validation.JobApplicationValidator;
 
 @Service
 public class JobApplicationService {
 
 	@Autowired
 	JobApplicationUserMapDao jobApplicationUserMapDao;
+	
+	@Autowired
+	JobApplicationValidator jobApplicationValidator;
 	
 	@Autowired
 	UserDao userDao;
@@ -30,58 +34,28 @@ public class JobApplicationService {
 	public void insertService(ApplyJobRequest applyJobRequest) throws Exception {
 		
 		
-		int userId  = userDao.getUserId(applyJobRequest.getUserId());
-		int jobId  = jobDao.getJobId(applyJobRequest.getJobId());
-		if(userId == 0 || jobId == 0) {
-			 
-			throw new InvalidRequest("userId or jobId is not correct", "400");
-		}
-		if(jobApplicationUserMapDao.isPresent(jobId, userId)) {
-			
-			throw new InvalidRequest("you have already appliyed to the job", "400");
-		}
-		
+		jobApplicationValidator.isUserIdJobIdPresent(applyJobRequest.getUserId(), applyJobRequest.getJobId());
+		jobApplicationValidator.isEntryPresent(applyJobRequest.getUserId(), applyJobRequest.getJobId(),"INSERT");
 		jobApplicationUserMapDao.insert(applyJobRequest);
 	}
 	
 	public void updateStatus(int jobId,int userId,String applicationStatus) throws Exception {
 		
 		
-		if(!ApplicationStatus.contains(applicationStatus)) {
-			throw new InvalidRequest("invalid application status", "400");
-		}
-		
-		if (!jobApplicationUserMapDao.isPresent(jobId, userId)) {
-
-			throw new InvalidRequest("Not applyied for the jobs", "400");
-		}
-
+		jobApplicationValidator.validStatus(applicationStatus);
+		jobApplicationValidator.isEntryPresent(userId, jobId,"UPDATE");
 		jobApplicationUserMapDao.update( jobId, userId, applicationStatus);
 	}
 	
 	public String getStatus(int jobId, int userId) throws Exception {
 		
-		userId  = userDao.getUserId(userId);
-		jobId  = jobDao.getJobId(jobId);
-		if(userId == 0 || jobId == 0) {
-			 
-			throw new InvalidRequest("userId or jobId is not correct", "400");
-		}
-		
-		if (!jobApplicationUserMapDao.isPresent(jobId, userId)) {
-
-			throw new InvalidRequest("Not applyied for the jobs", "400");
-		}
-
+		jobApplicationValidator.isUserIdJobIdPresent(userId, jobId);
+		jobApplicationValidator.isEntryPresent(userId, jobId,"GET");
 		return jobApplicationUserMapDao.get(jobId, userId);
 	}
 	
 	public List<JobApplicantsResponse> getApplicants(int jobId) throws Exception {
 
-		if(jobDao.getJobId(jobId) == 0) {
-			throw new InvalidRequest("jobId does not exist","400");
-		}
-		
 		List<JobApplicantsResponse> lisOfJobApplicantsResponse = jobApplicationUserMapDao.getListOfApplicant(jobId);
 		if(lisOfJobApplicantsResponse.size() == 0) {
 			
